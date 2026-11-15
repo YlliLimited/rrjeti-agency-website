@@ -426,3 +426,54 @@ $$('[data-wa], a[href^="tel:"]').forEach(a => a.addEventListener('click', () => 
     });
   }
 })();
+
+/* ---------- liquid-chrome shapes: layered parallax (mouse + scroll on desktop, scroll only on phones) ---------- */
+(() => {
+  const css = document.querySelector('link[rel="stylesheet"][href*="main.css"]');
+  const shapeUrl = n => css ? new URL('../img/shapes/' + n, css.href).href : 'assets/img/shapes/' + n;
+  // sub-page heroes get a ring + blob pair
+  $$('section.hero').forEach(hero => {
+    if (hero.querySelector('.hero-visual, .hero-deco')) return;
+    const d = document.createElement('div'); d.className = 'hero-deco'; d.setAttribute('aria-hidden', 'true');
+    d.innerHTML = '<span class="layer d-ring" data-depth="1"><img src="' + shapeUrl('ring-360.webp') + '" srcset="' + shapeUrl('ring-360.webp') + ' 360w, ' + shapeUrl('ring-640.webp') + ' 640w" sizes="(max-width: 760px) 120px, 230px" width="1200" height="1097" alt="" decoding="async"></span>'
+      + '<span class="layer d-blob" data-depth="1.8"><img src="' + shapeUrl('blob-360.webp') + '" width="1200" height="1200" alt="" decoding="async" loading="lazy"></span>';
+    hero.prepend(d);
+  });
+  if (reduceMotion) return;
+
+  const scenes = $$('.hero-visual[data-shapes], .hero-deco').map(el => ({ el, layers: $$('[data-depth]', el).map(l => ({ l, d: parseFloat(l.dataset.depth) || 1 })) }));
+  const heroText = document.querySelector('.hero .hero-text');
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const wide = () => innerWidth > 760;
+  let mx = 0, my = 0, tx = 0, ty = 0, raf = 0;
+
+  const frame = () => {
+    raf = 0;
+    mx += (tx - mx) * 0.08; my += (ty - my) * 0.08;
+    const y = window.scrollY, k = wide() ? 1 : 0.45;
+    scenes.forEach(({ el, layers }) => {
+      const r = el.getBoundingClientRect();
+      if (r.bottom < -100 || r.top > innerHeight + 100) return;
+      layers.forEach(({ l, d }) => {
+        const sx = mx * d * 22, sy = my * d * 16 - y * d * 0.14 * k, rot = mx * d * 2.4 + y * d * 0.012 * k;
+        l.style.transform = 'translate3d(' + sx.toFixed(1) + 'px,' + sy.toFixed(1) + 'px,0) rotate(' + rot.toFixed(2) + 'deg)';
+      });
+    });
+    if (heroText && wide() && y < innerHeight * 1.2) {
+      heroText.style.transform = 'translate3d(0,' + (y * 0.12).toFixed(1) + 'px,0)';
+      heroText.style.opacity = Math.max(0.25, 1 - y / (innerHeight * 1.1)).toFixed(3);
+    }
+    // case images drift inside their frames
+    if (wide()) $$('.case-card .case-img').forEach(img => {
+      const r = img.parentElement.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight) return;
+      img.style.translate = '0 ' + (((r.top + r.height / 2) / innerHeight - 0.5) * -26).toFixed(1) + 'px';
+    });
+    if (Math.abs(tx - mx) > 0.002 || Math.abs(ty - my) > 0.002) raf = requestAnimationFrame(frame);
+  };
+  const kick = () => { if (!raf) raf = requestAnimationFrame(frame); };
+  window.addEventListener('scroll', kick, { passive: true });
+  window.addEventListener('resize', kick, { passive: true });
+  if (fine) window.addEventListener('pointermove', e => { tx = e.clientX / innerWidth * 2 - 1; ty = e.clientY / innerHeight * 2 - 1; kick(); }, { passive: true });
+  kick();
+})();
