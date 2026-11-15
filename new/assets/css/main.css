@@ -808,3 +808,17 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 
 /* WhatsApp glyph as a plain white image (no mask needed) */
 .btn-wa .wa-ico, .nav-call .wa-ico { -webkit-mask: none; mask: none; background: url("../img/whatsapp-white.png") center / contain no-repeat; }
+
+/* ---------- v7: shape library + white WhatsApp text ---------- */
+.bead.s-holes { background-image: url("../img/shapes/holes-360.webp"); }
+.bead.s-splash { background-image: url("../img/shapes/splash-360.webp"); }
+.bead.s-drop { background-image: url("../img/shapes/drop-360.webp"); }
+.bead.s-ribbon { background-image: url("../img/shapes/ribbon-360.webp"); }
+.bead.s-star { background-image: url("../img/shapes/star-360.webp"); }
+.bead.s-links { background-image: url("../img/shapes/links-360.webp"); }
+.bead.s-infinity { background-image: url("../img/shapes/infinity-360.webp"); }
+.bead.s-spheres { background-image: url("../img/shapes/spheres-360.webp"); }
+.bead.s-thinring { background-image: url("../img/shapes/thinring-360.webp"); }
+.bead.s-percent { background-image: url("../img/shapes/percent-360.webp"); }
+.btn-wa, .btn-wa:hover, .nav-call, .nav-call:hover { color: #fff; }
+.btn-wa .wa-ico, .nav-call .wa-ico { filter: none; }

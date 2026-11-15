@@ -435,8 +435,12 @@ $$('[data-wa], a[href^="tel:"]').forEach(a => a.addEventListener('click', () => 
   $$('section.hero').forEach(hero => {
     if (hero.querySelector('.hero-visual, .hero-deco')) return;
     const d = document.createElement('div'); d.className = 'hero-deco'; d.setAttribute('aria-hidden', 'true');
-    d.innerHTML = '<span class="layer d-ring" data-depth="1"><img src="' + shapeUrl('ring-360.webp') + '" srcset="' + shapeUrl('ring-360.webp') + ' 360w, ' + shapeUrl('ring-640.webp') + ' 640w" sizes="(max-width: 760px) 120px, 230px" width="1200" height="1097" alt="" decoding="async"></span>'
-      + '<span class="layer d-blob" data-depth="1.8"><img src="' + shapeUrl('blob-360.webp') + '" width="1200" height="1200" alt="" decoding="async" loading="lazy"></span>';
+    // each page gets its own pair from the shape library
+    const pairs = { 'si-funksionon': ['percent', 'star'], 'puna': ['ribbon', 'spheres'], 'rastet': ['star', 'drop'], 'rreth-nesh': ['links', 'holes'], '10-perqind': ['percent', 'thinring'] };
+    const seg = location.pathname.replace(/^\/(en\/)?/, '').split('/')[0];
+    const [a, b] = pairs[seg] || (seg ? ['infinity', 'drop'] : ['ring', 'blob']);
+    const img = n => '<img src="' + shapeUrl(n + '-360.webp') + '" srcset="' + shapeUrl(n + '-360.webp') + ' 360w, ' + shapeUrl(n + '-640.webp') + ' 640w" sizes="(max-width: 760px) 120px, 230px" alt="" decoding="async">';
+    d.innerHTML = '<span class="layer d-ring" data-depth="1">' + img(a) + '</span><span class="layer d-blob" data-depth="1.8">' + img(b) + '</span>';
     hero.prepend(d);
   });
   if (reduceMotion) return;
