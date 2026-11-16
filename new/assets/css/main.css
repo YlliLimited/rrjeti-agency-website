@@ -877,3 +877,20 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 .office-grid.og-3 { grid-template-columns: 1.2fr 1fr 1fr; grid-template-rows: 460px; }
 .office-grid.og-3 .og-a { grid-row: auto; }
 @media (max-width: 760px) { .office-grid.og-3 { grid-template-columns: 1fr 1fr; grid-template-rows: 260px 220px; } .office-grid.og-3 .og-a { grid-column: span 2; } }
+
+/* v13: client logos in case heroes, referrals, case hero shapes */
+.hero-id { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.hero-logo { display: inline-flex; align-items: center; justify-content: center; height: 68px; padding: 10px 20px; border-radius: 20px; background: rgba(255,255,255,.88); border: 1px solid var(--glass-border); box-shadow: 0 10px 30px rgba(14,18,21,.08); }
+.hero-logo img { max-height: 46px; max-width: 150px; width: auto; object-fit: contain; }
+.hero-deco.deco-case .d-ring { width: 170px; top: 0; right: 0; }
+.hero-deco.deco-case .d-blob { width: 84px; top: 36px; right: 200px; }
+@media (max-width: 760px) { .hero-deco.deco-case .d-ring { width: 96px; top: 0; } }
+.referral { display: flex; flex-wrap: wrap; align-items: center; gap: 32px; padding: clamp(26px,4vw,44px); }
+.ref-chain { flex: 1 1 340px; display: flex; align-items: center; justify-content: center; gap: 18px; }
+.ref-to { display: flex; flex-direction: column; gap: 14px; }
+.ref-logo { display: flex; align-items: center; justify-content: center; width: 150px; height: 84px; padding: 14px; border-radius: 22px; background: rgba(255,255,255,.9); border: 1px solid var(--glass-border); box-shadow: 0 12px 30px rgba(14,18,21,.08); }
+.ref-logo img { max-width: 100%; max-height: 52px; object-fit: contain; }
+.ref-arrow { width: 60px; flex: none; fill: none; stroke: var(--brand); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+@media (max-width: 480px) { .ref-logo { width: 120px; height: 70px; } .ref-arrow { width: 40px; } }
+.hero-logo { height: 80px; padding: 12px 22px; } .hero-logo img { max-height: 56px; max-width: 170px; }
+.hero-logo.on-ink, .ref-logo.on-ink { background: #11181c; border-color: #11181c; }

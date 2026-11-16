@@ -422,8 +422,9 @@ $$('[data-wa], a[href^="tel:"]').forEach(a => a.addEventListener('click', () => 
     if (hero.querySelector('.hero-visual, .hero-deco')) return;
     const d = document.createElement('div'); d.className = 'hero-deco'; d.setAttribute('aria-hidden', 'true');
     // each page gets its own pair from the shape library
-    const pairs = { 'si-funksionon': ['percent', 'star'], 'puna': ['ribbon', 'spheres'], 'rastet': ['star', 'drop'], 'rreth-nesh': ['links', 'holes'], '10-perqind': ['percent', 'thinring'] };
-    const seg = location.pathname.replace(/^\/(en\/)?/, '').split('/')[0];
+    const pairs = { 'si-funksionon': ['percent', 'star'], 'puna': ['ribbon', 'spheres'], 'rastet': ['star', 'drop'], 'rreth-nesh': ['links', 'holes'] };
+    const parts = location.pathname.replace(/^\/(en\/)?/, '').split('/').filter(Boolean), seg = parts[0] || '';
+    if (seg === 'rastet' && parts.length > 1) d.classList.add('deco-case');
     const [a, b] = pairs[seg] || (seg ? ['infinity', 'drop'] : ['ring', 'blob']);
     const img = n => '<img src="' + shapeUrl(n + '-360.webp') + '" srcset="' + shapeUrl(n + '-360.webp') + ' 360w, ' + shapeUrl(n + '-640.webp') + ' 640w" sizes="(max-width: 760px) 120px, 230px" alt="" decoding="async">';
     d.innerHTML = '<span class="layer d-ring" data-depth="1">' + img(a) + '</span><span class="layer d-blob" data-depth="1.8">' + img(b) + '</span>';
