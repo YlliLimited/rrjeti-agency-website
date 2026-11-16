@@ -894,3 +894,14 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 @media (max-width: 480px) { .ref-logo { width: 120px; height: 70px; } .ref-arrow { width: 40px; } }
 .hero-logo { height: 80px; padding: 12px 22px; } .hero-logo img { max-height: 56px; max-width: 170px; }
 .hero-logo.on-ink, .ref-logo.on-ink { background: #11181c; border-color: #11181c; }
+
+/* v17: mobile fixes */
+.nowrap { white-space: nowrap; }
+@media (max-width: 640px) {
+  .table-compare { min-width: 0; table-layout: fixed; font-size: 14px; }
+  .table-compare tr > :nth-child(3) { display: none; }
+  .table-compare th, .table-compare td { padding: 13px 12px; }
+  .table-compare thead th { font-size: 15px; }
+  .table-compare tr > :first-child { width: 32%; }
+}
+@media (max-width: 440px) { .hero-text .h1 { font-size: 12.4vw; } }
