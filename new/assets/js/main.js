@@ -17,7 +17,8 @@ const RRJETI = {
 document.documentElement.classList.remove('no-js');
 const EN = (document.documentElement.lang || '').startsWith('en');
 const t = (sq, en) => (EN ? en : sq);
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// motion runs even when Windows/macOS 'reduce animations' is on (owner's choice)
+const reduceMotion = false;
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 const LOC = EN ? 'en-US' : 'de-DE';
