@@ -142,7 +142,17 @@ def fix_paths_for_en(s, rel):
         if target.startswith('assets/'):
             return f'{attr}="../{url}"' if url.startswith(('../', 'assets/')) else m.group(0)
         return m.group(0)
-    return re.sub(r'\b(href|src)="([^"]*)"', f, s)
+    s = re.sub(r'\b(href|src)="([^"]*)"', f, s)
+    def fix_srcset(m):
+        out = []
+        for item in m.group(1).split(','):
+            u, _, d = item.strip().partition(' ')
+            t = posixpath.normpath(posixpath.join(base, u))
+            if t.startswith('assets/') and not re.match(r'^(https?:|/)', u):
+                u = '../' + u
+            out.append(u + (' ' + d if d else ''))
+        return 'srcset="' + ', '.join(out) + '"'
+    return re.sub(r'srcset="([^"]*)"', fix_srcset, s)
 
 
 def absolutize(s, rel, lang):

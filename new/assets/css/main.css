@@ -871,3 +871,9 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 .office-grid .og-b { grid-column: span 2; }
 @media (max-width: 760px) { .office-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 220px 220px 220px; } .office-grid .og-a { grid-row: span 1; } .office-grid .og-b { grid-column: span 2; } }
 .team-studio { height: 180px; border-radius: 24px; padding: 0; }
+
+/* v12: apply form stays centred while the side column scrolls; 3-photo office grid */
+@media (min-width: 1025px) { .apply-main { position: sticky; top: max(96px, calc(50vh - 330px)); align-self: flex-start; } }
+.office-grid.og-3 { grid-template-columns: 1.2fr 1fr 1fr; grid-template-rows: 460px; }
+.office-grid.og-3 .og-a { grid-row: auto; }
+@media (max-width: 760px) { .office-grid.og-3 { grid-template-columns: 1fr 1fr; grid-template-rows: 260px 220px; } .office-grid.og-3 .og-a { grid-column: span 2; } }

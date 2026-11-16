@@ -491,7 +491,7 @@ $$('[data-wa], a[href^="tel:"]').forEach(a => a.addEventListener('click', () => 
 
 /* ---------- auto count-up: any big number (big-num / num / metric) grows when it scrolls in ---------- */
 (() => {
-  const els = $$('.big-num, .stat .num, .num, .metric').filter(el => !el.closest('[data-count], [data-calc], [data-ex]') && !el.querySelector('[data-count], [data-calc], [data-ex]'));
+  const els = $$('.big-num, .stat .num, .num, .metric').filter(el => !el.closest('[data-count], [data-calc], [data-ex], [data-static]') && !el.querySelector('[data-count], [data-calc], [data-ex]'));
   const jobs = [];
   els.forEach(el => {
     const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
