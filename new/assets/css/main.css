@@ -857,3 +857,9 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 .hero[style*="center"] .hero-deco .d-ring { right: 0; } .hero[style*="center"] .hero-deco .d-blob { left: 0; right: auto; }
 @media (max-width: 760px) { .hero-deco .d-ring { right: 0; } }
 .hero[style*="center"] .hero-deco .d-ring { width: 130px; top: 0; } .hero[style*="center"] .hero-deco .d-blob { width: 90px; top: 40px; }
+
+/* v10: real media in case studies */
+.mock-phone .site-scroll { position: absolute; inset: 0; width: 100%; height: auto; min-height: 100%; object-fit: cover; object-position: top; }
+.post-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.report-chart .rc-line { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.6s cubic-bezier(.2,.8,.2,1) .2s; }
+.report-chart.in .rc-line, .reveal.in .report-chart .rc-line { stroke-dashoffset: 0; }
