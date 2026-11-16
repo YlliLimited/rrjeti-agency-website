@@ -415,7 +415,7 @@ $$('[data-wa], a[href^="tel:"]').forEach(a => a.addEventListener('click', () => 
 
 /* ---------- liquid-chrome shapes: layered parallax (mouse + scroll on desktop, scroll only on phones) ---------- */
 (() => {
-  const css = document.querySelector('link[rel="stylesheet"][href*="main.css"]');
+  const css = document.querySelector('link[rel="stylesheet"][href*="css/main"]');
   const shapeUrl = n => css ? new URL('../img/shapes/' + n, css.href).href : 'assets/img/shapes/' + n;
   // sub-page heroes get a ring + blob pair
   $$('section.hero').forEach(hero => {

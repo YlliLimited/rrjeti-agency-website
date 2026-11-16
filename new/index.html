@@ -33,10 +33,9 @@
 <!-- seo:end -->
 <meta name="theme-color" content="#EEF1F3">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/main.css?v=17">
+<link rel="preload" href="assets/fonts/inter-tight-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/main.min.css?v=9cbcd061">
 </head>
 <body>
 <a class="skip-link" href="#main">Kalo te përmbajtja</a>
@@ -153,8 +152,8 @@
         <input class="range" id="calc-rev" type="range" min="5000" max="60000" step="1000" value="10000">
       </div>
       <div class="grid g2 keep-2" style="gap:12px">
-        <div class="soft" style="padding:18px"><div class="small muted">Qarkullimi bruto</div><div class="big-num calc-num" data-calc="rev">10.000 €</div></div>
-        <div class="dark" style="padding:18px;border-radius:20px"><div class="small" style="color:rgba(255,255,255,.75)">Investimi në Rrjeti (10%)</div><div class="big-num calc-num" data-calc="fee">1.000 €</div></div>
+        <div class="soft calc-tile" style="padding:18px"><div class="small muted">Qarkullimi bruto</div><div class="big-num calc-num" data-calc="rev">10.000 €</div></div>
+        <div class="dark calc-tile" style="padding:18px;border-radius:20px"><div class="small" style="color:rgba(255,255,255,.75)">Investimi në Rrjeti (10%)</div><div class="big-num calc-num" data-calc="fee">1.000 €</div></div>
       </div>
       <p class="muted">10%-shi llogaritet nga qarkullimi bruto, para shpenzimeve: 10.000 € bruto = 1.000 € në muaj.</p>
       <div class="note-brand"><strong>Për biznese që ofrojnë shërbime</strong> (klinika, laboratorë, sallone). Nëse shet produkte me marzhë të ngushtë, punojmë me <a href="#apliko" data-offer="fiks">çmim fiks mujor</a>, me të njëjtën cilësi.</div>
@@ -393,6 +392,6 @@
   <p>Përdorim cookies të Meta për të matur reklamat tona. A pajtohesh?</p>
   <div class="btn-row"><button class="btn btn-dark" id="cookie-yes" type="button">Pranoj</button><button class="btn btn-ghost" id="cookie-no" type="button">Jo, faleminderit</button></div>
 </div>
-<script src="assets/js/main.js?v=16" defer></script>
+<script src="assets/js/main.min.js?v=fba13003" defer></script>
 </body>
 </html>

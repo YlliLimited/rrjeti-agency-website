@@ -1,3 +1,8 @@
+/* self-hosted Inter + Inter Tight (variable, latin + latin-ext) */
+@font-face{font-family:'Inter';font-style:normal;font-weight:400 700;font-display:swap;src:url(../fonts/inter-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Inter';font-style:normal;font-weight:400 700;font-display:swap;src:url(../fonts/inter-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Inter Tight';font-style:normal;font-weight:600 900;font-display:swap;src:url(../fonts/inter-tight-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Inter Tight';font-style:normal;font-weight:600 900;font-display:swap;src:url(../fonts/inter-tight-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 /* =========================================================
    Rrjeti Agency · main stylesheet
    Glass + chrome look. Mobile-first breakpoints: 760px, 1024px.
@@ -104,10 +109,10 @@ button { font: inherit; }
   color: var(--brand); text-transform: uppercase;
 }
 .on-dark .eyebrow, .dark .eyebrow { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.2); color: #fff; }
-.h1 { font-weight: 900; font-size: clamp(54px, 8.6vw, 136px); line-height: 0.92; letter-spacing: -0.055em; }
-.h1-sm { font-weight: 900; font-size: clamp(46px, 7vw, 108px); line-height: 0.93; letter-spacing: -0.055em; }
-.h2 { font-weight: 800; font-size: clamp(38px, 5.4vw, 76px); line-height: 0.99; letter-spacing: -0.045em; }
-.h3 { font-weight: 800; font-size: clamp(28px, 3.2vw, 44px); line-height: 1.02; letter-spacing: -0.04em; }
+.h1 { font-weight: 900; font-size: clamp(54px, 8.6vw, 136px); line-height: 0.95; letter-spacing: -0.035em; }
+.h1-sm { font-weight: 900; font-size: clamp(46px, 7vw, 108px); line-height: 0.96; letter-spacing: -0.035em; }
+.h2 { font-weight: 800; font-size: clamp(38px, 5.4vw, 76px); line-height: 1.01; letter-spacing: -0.03em; }
+.h3 { font-weight: 800; font-size: clamp(28px, 3.2vw, 44px); line-height: 1.04; letter-spacing: -0.025em; }
 .h4 { font-weight: 700; font-size: 23px; line-height: 1.15; letter-spacing: -0.02em; }
 .lead { font-size: clamp(18px, 1.6vw, 20px); line-height: 1.55; color: var(--ink-2); max-width: 640px; }
 .muted { color: var(--ink-3); }
@@ -271,10 +276,10 @@ button { font: inherit; }
 
 /* stats */
 .stat { padding: 22px; border-radius: var(--radius-md); }
-.stat .num { font-family: var(--font-head); font-weight: 800; font-size: clamp(32px, 3.4vw, 46px); letter-spacing: -0.04em; line-height: 1.05; }
+.stat .num { font-family: var(--font-head); font-weight: 800; font-size: clamp(32px, 3.4vw, 46px); letter-spacing: -0.03em; line-height: 1.05; }
 .stat .lbl { font-size: 15px; color: var(--ink-3); margin-top: 4px; }
 .brand-fill .stat .lbl, .stat.brand-fill .lbl, .stat.dark .lbl { color: rgba(255,255,255,0.85); }
-.big-num { font-family: var(--font-head); font-weight: 900; font-size: clamp(48px, 5.5vw, 70px); letter-spacing: -0.05em; line-height: 1; }
+.big-num { font-family: var(--font-head); font-weight: 900; font-size: clamp(48px, 5.5vw, 70px); letter-spacing: -0.035em; line-height: 1; }
 
 /* ---------- logo grid ---------- */
 .logo-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
@@ -311,7 +316,7 @@ button { font: inherit; }
 .split-row { display: flex; justify-content: space-between; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.12); }
 
 .split-row strong { white-space: nowrap; }
-.calc-num { font-size: clamp(26px, 6.6vw, 34px); white-space: nowrap; }
+.calc-num { font-size: clamp(20px, 5.8vw, 34px); white-space: nowrap; }
 .split-row:last-child { border-bottom: 0; padding-bottom: 0; }
 .dot { display: inline-block; width: 12px; height: 12px; border-radius: 4px; margin-right: 10px; vertical-align: -1px; }
 .note-brand { padding: 16px 18px; border-radius: 18px; background: rgba(19,92,102,0.08); font-size: 16px; color: #22292F; }
@@ -379,7 +384,7 @@ button { font: inherit; }
 .case-card:hover { transform: translateY(-4px); color: var(--ink); }
 .case-card .ph { height: 240px; border-radius: 0; }
 .case-card .body { padding: 22px 24px 26px; display: flex; flex-direction: column; gap: 8px; }
-.case-card .metric { font-family: var(--font-head); font-weight: 800; font-size: 40px; letter-spacing: -0.04em; line-height: 1; }
+.case-card .metric { font-family: var(--font-head); font-weight: 800; font-size: 40px; letter-spacing: -0.03em; line-height: 1; }
 .case-card .more { margin-top: 6px; font-weight: 700; color: var(--brand); }
 .case-card.soon { pointer-events: none; }
 .case-card.soon .more { color: var(--ink-3); }
@@ -627,6 +632,9 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 
 /* "10%" in the hero: slow chrome shimmer */
 .hero .grad-text { background-size: 200% 100%; animation: grad-move 7s ease-in-out infinite; }
+/* gradient lives on the animated word itself, so it paints during the reveal instead of popping in after */
+.words .grad-text { background: none; animation: none; color: inherit; }
+.words .grad-text .w > span { background: linear-gradient(100deg, var(--brand), var(--brand-2) 55%, var(--electric)); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: grad-move 7s ease-in-out infinite; }
 @keyframes grad-move { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
 
 /* ---------- scroll motion ---------- */
@@ -686,7 +694,7 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 .reveal.in { opacity: 1; transform: none; }
 .stagger > * { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
 .stagger.in > * { opacity: 1; transform: none; }
-.words .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.06em; }
+.words .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0.04em 0.09em 0.12em; margin: -0.04em -0.09em -0.12em; }
 .words .w > span { display: inline-block; transform: translateY(105%); transition: transform .9s cubic-bezier(.2,.8,.2,1); }
 .words.in .w > span { transform: none; }
 .no-js .reveal, .no-js .stagger > * { opacity: 1; transform: none; }
@@ -905,3 +913,15 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
   .table-compare tr > :first-child { width: 32%; }
 }
 @media (max-width: 440px) { .hero-text .h1 { font-size: 12.4vw; } }
+
+/* v18: phones — lighter glass blur (cheaper to paint while scrolling), same look */
+@media (max-width: 760px) {
+  :root { --glass-blur: 10px; }
+  .strips span { -webkit-backdrop-filter: blur(10px) !important; backdrop-filter: blur(10px) !important; }
+}
+/* stop looping decoration for people who ask their phone for less motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+}
+.nowrap > .grad-text { margin-right: -0.05em; }
+@media (max-width: 760px) { .calc-tile { padding: 14px !important; } .calc-card { padding: 20px !important; } }

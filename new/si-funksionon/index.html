@@ -33,10 +33,9 @@
 <!-- seo:end -->
 <meta name="theme-color" content="#EEF1F3">
 <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/main.css?v=17">
+<link rel="preload" href="../assets/fonts/inter-tight-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/css/main.min.css?v=9cbcd061">
 </head>
 <body>
 <a class="skip-link" href="#main">Kalo te përmbajtja</a>
@@ -73,9 +72,9 @@
       <button class="filter" role="tab" type="button" aria-selected="false" data-rev="20000" tabindex="-1">Klinikë estetike</button>
     </div>
     <div class="row" role="tabpanel">
-      <div class="glass card grid g2 keep-2" style="flex:999 1 620px;min-width:0;padding:32px">
-        <div class="soft" style="padding:22px"><div class="small muted">Qarkullimi bruto mujor</div><div class="big-num" style="font-size:clamp(34px,4vw,46px)" data-ex="rev">12.000 €</div></div>
-        <div class="dark" style="padding:22px;border-radius:var(--radius-md)"><div class="small" style="color:rgba(255,255,255,.75)">Rrjeti merr (10%)</div><div class="big-num" style="font-size:clamp(34px,4vw,46px)" data-ex="fee">1.200 €</div></div>
+      <div class="glass card grid g2 keep-2 calc-card" style="flex:999 1 620px;min-width:0;padding:32px">
+        <div class="soft calc-tile" style="padding:22px"><div class="small muted">Qarkullimi bruto mujor</div><div class="big-num" style="font-size:clamp(20px,5.8vw,46px);white-space:nowrap" data-ex="rev">12.000 €</div></div>
+        <div class="dark calc-tile" style="padding:22px;border-radius:var(--radius-md)"><div class="small" style="color:rgba(255,255,255,.75)">Rrjeti merr (10%)</div><div class="big-num" style="font-size:clamp(20px,5.8vw,46px);white-space:nowrap" data-ex="fee">1.200 €</div></div>
         <p class="span-all muted">Pa llogaritje marzhe: 10% e asaj që hyn në arkë, para shpenzimeve. Nga kjo shumë paguhen edhe reklamat.</p>
       </div>
       <div class="brand-fill card stack" style="flex:1 1 360px;gap:12px">
@@ -217,6 +216,6 @@
   <p>Përdorim cookies të Meta për të matur reklamat tona. A pajtohesh?</p>
   <div class="btn-row"><button class="btn btn-dark" id="cookie-yes" type="button">Pranoj</button><button class="btn btn-ghost" id="cookie-no" type="button">Jo, faleminderit</button></div>
 </div>
-<script src="../assets/js/main.js?v=16" defer></script>
+<script src="../assets/js/main.min.js?v=fba13003" defer></script>
 </body>
 </html>

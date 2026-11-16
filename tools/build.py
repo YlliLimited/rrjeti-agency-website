@@ -3,7 +3,12 @@
 1. adds the SEO block to every page (canonical, hreflang, Open Graph,
    Twitter, robots, JSON-LD structured data),
 2. builds the English version of every page in new/en/ from tools/en.json,
-3. writes sitemap.xml, robots.txt, llms.txt and CNAME.
+3. writes sitemap.xml, robots.txt, llms.txt and CNAME,
+4. minifies assets/css/main.css and assets/js/main.js into main.min.*
+   (with esbuild through npx when available, else a plain copy) and stamps
+   every page with a content-hash ?v= so browsers never keep stale files.
+
+Edit main.css / main.js, never the .min files.
 
 Run after any change to the Albanian pages:   python tools/build.py
 New Albanian text that has no English yet is listed at the end; add it
@@ -302,12 +307,37 @@ def pages():
                 yield posixpath.relpath(posixpath.join(dp.replace('\\', '/'), f), ROOT.replace('\\', '/'))
 
 
+def build_assets():
+    import hashlib, shutil, subprocess
+    vers = {}
+    for kind, name in (('css', 'main.css'), ('js', 'main.js')):
+        src = os.path.join(ROOT, 'assets', kind, name)
+        out = src.replace(name, name.replace('.', '.min.'))
+        try:
+            subprocess.run(['npx', '--yes', 'esbuild@0.24.0', src, '--minify', '--log-level=error', '--outfile=' + out],
+                           check=True, capture_output=True, timeout=180, shell=(os.name == 'nt'))
+        except Exception as e:
+            print(f'  esbuild not available ({e.__class__.__name__}), copying {name} unminified')
+            shutil.copyfile(src, out)
+        vers[kind] = hashlib.sha1(open(out, 'rb').read()).hexdigest()[:8]
+        print(f'  {name}: {os.path.getsize(src) // 1024} KB -> {os.path.getsize(out) // 1024} KB')
+    return vers
+
+
+def stamp_assets(s, vers):
+    s = re.sub(r'assets/css/main(?:\.min)?\.css(?:\?v=[\w]+)?', 'assets/css/main.min.css?v=' + vers['css'], s)
+    s = re.sub(r'assets/js/main(?:\.min)?\.js(?:\?v=[\w]+)?', 'assets/js/main.min.js?v=' + vers['js'], s)
+    return s
+
+
 def main():
+    vers = build_assets()
     built = []
     for rel in sorted(pages()):
         src = os.path.join(ROOT, rel)
         s = open(src, encoding='utf-8').read()
         s = re.sub(r'\n?<!-- seo:start.*?<!-- seo:end -->', '', s, flags=re.S)
+        s = stamp_assets(s, vers)
         sq = finalize(s, rel, 'sq')
         open(src, 'w', encoding='utf-8').write(sq)
         en = translate(s, rel)
