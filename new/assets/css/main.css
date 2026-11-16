@@ -847,3 +847,13 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 .cta-panel .form-white .input, .cta-panel .form-white .select { background: rgba(255,255,255,.85); }
 .form-or { display: flex; align-items: center; gap: 12px; color: #6a757c; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; }
 .form-or::before, .form-or::after { content: ""; flex: 1; height: 1px; background: rgba(14,18,21,.12); }
+
+/* v9: smoother motion */
+.bead, .glow { will-change: translate; }
+.hero-text { will-change: opacity; }
+/* sub-page hero shapes stay inside the content width */
+.hero-deco { left: max(var(--pad), calc((100% - var(--container)) / 2 + var(--pad))); right: max(var(--pad), calc((100% - var(--container)) / 2 + var(--pad))); overflow: visible; }
+.hero-deco .d-ring { right: 0; } .hero-deco .d-blob { right: 240px; }
+.hero[style*="center"] .hero-deco .d-ring { right: 0; } .hero[style*="center"] .hero-deco .d-blob { left: 0; right: auto; }
+@media (max-width: 760px) { .hero-deco .d-ring { right: 0; } }
+.hero[style*="center"] .hero-deco .d-ring { width: 130px; top: 0; } .hero[style*="center"] .hero-deco .d-blob { width: 90px; top: 40px; }

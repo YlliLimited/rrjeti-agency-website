@@ -395,24 +395,9 @@ $$('[data-wa], a[href^="tel:"]').forEach(a => a.addEventListener('click', () => 
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
   $$('.reveal-left, .reveal-right, .reveal-scale, .eyebrow').forEach(el => io.observe(el));
 
-  // parallax on glows and chrome beads + scroll progress bar
-  $$('.glow, .bead').forEach((el, i) => { if (!el.hasAttribute('data-parallax')) el.setAttribute('data-parallax', el.classList.contains('bead') ? (0.18 + (i % 3) * 0.06) : 0.08); });
-  const par = $$('[data-parallax]');
+  // parallax on glows and chrome beads runs in the shared scroll engine below
+  $$('.glow, .bead').forEach((el, i) => { if (!el.hasAttribute('data-parallax')) el.setAttribute('data-parallax', el.classList.contains('bead') ? (0.12 + (i % 3) * 0.05) : 0.06); });
   const bar = document.createElement('div'); bar.className = 'scroll-progress'; bar.setAttribute('aria-hidden', 'true'); document.body.appendChild(bar);
-  let ticking = false;
-  const update = () => {
-    ticking = false;
-    const y = window.scrollY, h = document.documentElement.scrollHeight - innerHeight;
-    bar.style.transform = 'scaleX(' + (h > 0 ? y / h : 0) + ')';
-    par.forEach(el => {
-      const r = el.parentElement.getBoundingClientRect();
-      if (r.bottom < -200 || r.top > innerHeight + 200) return;
-      const speed = parseFloat(el.dataset.parallax) || 0.1;
-      el.style.translate = '0 ' + ((r.top + r.height / 2 - innerHeight / 2) * -speed).toFixed(1) + 'px';
-    });
-  };
-  window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
-  update();
 
   // gentle 3D tilt on cards (mouse only)
   if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
@@ -446,39 +431,102 @@ $$('[data-wa], a[href^="tel:"]').forEach(a => a.addEventListener('click', () => 
   });
   if (reduceMotion) return;
 
-  const scenes = $$('.hero-visual[data-shapes], .hero-deco').map(el => ({ el, layers: $$('[data-depth]', el).map(l => ({ l, d: parseFloat(l.dataset.depth) || 1 })) }));
+  /* one rAF loop for every scroll/mouse effect.
+     Positions are measured once (and on resize), so frames never read layout;
+     scroll is eased so wheel steps glide instead of jumping. */
+  const box = el => ({ el, top: 0, bot: 0, mid: 0 });
+  const scenes = $$('.hero-visual[data-shapes], .hero-deco').map(el => Object.assign(box(el), { host: el, layers: $$('[data-depth]', el).map(l => ({ l, d: parseFloat(l.dataset.depth) || 1 })) }));
+  const par = $$('[data-parallax]').map(el => Object.assign(box(el), { host: el.parentElement, speed: parseFloat(el.dataset.parallax) || 0.1 }));
+  const cases = $$('.case-card .case-img').map(el => Object.assign(box(el), { host: el.parentElement }));
   const heroText = document.querySelector('.hero .hero-text');
+  const bar = $('.scroll-progress');
   const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  const wide = () => innerWidth > 760;
-  let mx = 0, my = 0, tx = 0, ty = 0, raf = 0;
+  let wide = innerWidth > 760, vh = innerHeight, docH = 1;
+  let mx = 0, my = 0, tx = 0, ty = 0, sy = window.scrollY, raf = 0;
+
+  const measure = () => {
+    wide = innerWidth > 760; vh = innerHeight; docH = document.documentElement.scrollHeight - vh;
+    const y = window.scrollY;
+    [...par, ...cases, ...scenes].forEach(o => { const r = o.host.getBoundingClientRect(); o.top = r.top + y; o.bot = r.bottom + y; o.mid = (o.top + o.bot) / 2; });
+  };
+  const near = (o, y, m) => o.bot > y - m && o.top < y + vh + m;
 
   const frame = () => {
     raf = 0;
+    const target = window.scrollY;
+    sy += (target - sy) * 0.16; if (Math.abs(target - sy) < 0.4) sy = target;
     mx += (tx - mx) * 0.08; my += (ty - my) * 0.08;
-    const y = window.scrollY, k = wide() ? 1 : 0.45;
-    scenes.forEach(({ el, layers }) => {
-      const r = el.getBoundingClientRect();
-      if (r.bottom < -100 || r.top > innerHeight + 100) return;
-      layers.forEach(({ l, d }) => {
-        const sx = mx * d * 22, sy = my * d * 16 - y * d * 0.14 * k, rot = mx * d * 2.4 + y * d * 0.012 * k;
-        l.style.transform = 'translate3d(' + sx.toFixed(1) + 'px,' + sy.toFixed(1) + 'px,0) rotate(' + rot.toFixed(2) + 'deg)';
+    const y = sy, k = wide ? 1 : 0.45;
+    if (bar) bar.style.transform = 'scaleX(' + (docH > 0 ? Math.min(1, target / docH) : 0) + ')';
+    // beads rise into place from below, so they never climb over the section above
+    par.forEach(o => {
+      if (!near(o, y, 300)) return;
+      const off = Math.max(-140, Math.min(140, (o.mid - (y + vh / 2)) * o.speed));
+      o.el.style.translate = '0 ' + off.toFixed(1) + 'px';
+    });
+    scenes.forEach(o => {
+      if (!near(o, y, 100)) return;
+      o.layers.forEach(({ l, d }) => {
+        const px = mx * d * 22, py = my * d * 16 - y * d * 0.14 * k, rot = mx * d * 2.4 + y * d * 0.012 * k;
+        l.style.transform = 'translate3d(' + px.toFixed(1) + 'px,' + py.toFixed(1) + 'px,0) rotate(' + rot.toFixed(2) + 'deg)';
       });
     });
-    if (heroText && wide() && y < innerHeight * 1.2) {
-      heroText.style.transform = 'translate3d(0,' + (y * 0.12).toFixed(1) + 'px,0)';
-      heroText.style.opacity = Math.max(0.25, 1 - y / (innerHeight * 1.1)).toFixed(3);
-    }
-    // case images drift inside their frames
-    if (wide()) $$('.case-card .case-img').forEach(img => {
-      const r = img.parentElement.getBoundingClientRect();
-      if (r.bottom < 0 || r.top > innerHeight) return;
-      img.style.translate = '0 ' + (((r.top + r.height / 2) / innerHeight - 0.5) * -26).toFixed(1) + 'px';
+    // hero copy only fades; it no longer slides down over the cards below
+    if (heroText && wide && y < vh * 1.4) heroText.style.opacity = Math.max(0.35, 1 - y / (vh * 1.3)).toFixed(3);
+    if (wide) cases.forEach(o => {
+      if (!near(o, y, 0)) return;
+      o.el.style.translate = '0 ' + (((o.mid - y) / vh - 0.5) * -26).toFixed(1) + 'px';
     });
-    if (Math.abs(tx - mx) > 0.002 || Math.abs(ty - my) > 0.002) raf = requestAnimationFrame(frame);
+    if (sy !== target || Math.abs(tx - mx) > 0.002 || Math.abs(ty - my) > 0.002) raf = requestAnimationFrame(frame);
   };
   const kick = () => { if (!raf) raf = requestAnimationFrame(frame); };
+  let rt; const remeasure = () => { clearTimeout(rt); rt = setTimeout(() => { measure(); kick(); }, 120); };
   window.addEventListener('scroll', kick, { passive: true });
-  window.addEventListener('resize', kick, { passive: true });
+  window.addEventListener('resize', remeasure, { passive: true });
+  window.addEventListener('load', remeasure);
+  if ('ResizeObserver' in window) new ResizeObserver(remeasure).observe(document.body);
   if (fine) window.addEventListener('pointermove', e => { tx = e.clientX / innerWidth * 2 - 1; ty = e.clientY / innerHeight * 2 - 1; kick(); }, { passive: true });
-  kick();
+  measure(); kick();
+})();
+
+/* ---------- auto count-up: any big number (big-num / num / metric) grows when it scrolls in ---------- */
+(() => {
+  const els = $$('.big-num, .stat .num, .num, .metric').filter(el => !el.closest('[data-count], [data-calc], [data-ex]') && !el.querySelector('[data-count], [data-calc], [data-ex]'));
+  const jobs = [];
+  els.forEach(el => {
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    let n; while ((n = w.nextNode())) {
+      const m = n.nodeValue.match(/\d[\d.,]*\d|\d/);
+      if (!m) continue;
+      const tok = m[0];
+      // "12.000" / "1,200" = thousands; "1,70" / "2.8" = decimals
+      const sep = tok.match(/[.,]/g) || [];
+      let dec = 0, decSep = '', grp = '';
+      const last = tok.search(/[.,]\d+$/);
+      if (last >= 0 && tok.length - last - 1 !== 3) { dec = tok.length - last - 1; decSep = tok[last]; grp = sep.length > 1 ? sep[0] : ''; }
+      else if (sep.length) grp = sep[0];
+      const val = parseFloat(tok.split(grp || '\u0000').join('').replace(decSep || '\u0000', '.'));
+      if (!isFinite(val) || val === 0) break;
+      jobs.push({ el, n, pre: n.nodeValue.slice(0, m.index), suf: n.nodeValue.slice(m.index + tok.length), val, dec, decSep, grp });
+      break;
+    }
+  });
+  if (!jobs.length || !('IntersectionObserver' in window)) return;
+  const fmt = (j, v) => {
+    let [i, f] = v.toFixed(j.dec).split('.');
+    if (j.grp) i = i.replace(/\B(?=(\d{3})+(?!\d))/g, j.grp);
+    return f ? i + j.decSep + f : i;
+  };
+  const run = j => {
+    const t0 = performance.now(), dur = 1400;
+    const tick = t => {
+      const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+      j.n.nodeValue = j.pre + fmt(j, j.val * e) + j.suf;
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+  const map = new Map(jobs.map(j => [j.el, j]));
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { run(map.get(e.target)); io.unobserve(e.target); } }), { threshold: 0.5 });
+  jobs.forEach(j => { j.n.nodeValue = j.pre + fmt(j, 0) + j.suf; io.observe(j.el); });
 })();
