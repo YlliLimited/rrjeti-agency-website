@@ -925,3 +925,14 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 }
 .nowrap > .grad-text { margin-right: -0.05em; }
 @media (max-width: 760px) { .calc-tile { padding: 14px !important; } .calc-card { padding: 20px !important; } }
+
+/* v19: wrapped pills become rounded cards; phone hero shows the title first */
+.hero-pill.is-wrapped, .chip.is-wrapped, .eyebrow.is-wrapped { border-radius: 16px; line-height: 1.35; }
+.hero-pill.is-wrapped { align-items: flex-start; padding: 10px 14px 10px 10px; }
+.hero-pill.is-wrapped b { border-radius: 8px; margin-top: 1px; }
+.chip.is-wrapped { border-radius: 12px; }
+.eyebrow.is-wrapped { border-radius: 12px; }
+@media (max-width: 760px) {
+  .hero-visual { order: 0; margin-top: 8px; height: 300px; }
+  .l-loop { width: 80%; max-width: 320px; left: 50%; margin-left: max(-40%, -160px); top: 0; }
+}

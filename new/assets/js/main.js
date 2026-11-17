@@ -467,8 +467,9 @@ $$('[data-wa], a[href^="tel:"]').forEach(a => a.addEventListener('click', () => 
     });
     scenes.forEach(o => {
       if (!near(o, y, 100)) return;
+      const ry = wide ? y : y + vh / 2 - o.mid; // phones: drift relative to where the shapes sit on screen
       o.layers.forEach(({ l, d }) => {
-        const px = mx * d * 22, py = my * d * 16 - y * d * 0.14 * k, rot = mx * d * 2.4 + y * d * 0.012 * k;
+        const px = mx * d * 22, py = my * d * 16 - ry * d * 0.14 * k, rot = mx * d * 2.4 + ry * d * 0.012 * k;
         l.style.transform = 'translate3d(' + px.toFixed(1) + 'px,' + py.toFixed(1) + 'px,0) rotate(' + rot.toFixed(2) + 'deg)';
       });
     });
@@ -530,4 +531,19 @@ $$('[data-wa], a[href^="tel:"]').forEach(a => a.addEventListener('click', () => 
   const map = new Map(jobs.map(j => [j.el, j]));
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { run(map.get(e.target)); io.unobserve(e.target); } }), { threshold: 0.5 });
   jobs.forEach(j => { j.n.nodeValue = j.pre + fmt(j, 0) + j.suf; io.observe(j.el); });
+})();
+
+/* ---------- pills that wrap onto 2+ lines get a normal rounded corner instead ---------- */
+(() => {
+  const els = document.querySelectorAll('.hero-pill, .chip, .eyebrow');
+  if (!els.length) return;
+  const check = () => els.forEach(el => {
+    el.classList.remove('is-wrapped');
+    const lh = parseFloat(getComputedStyle(el).fontSize) * 1.9;
+    const inner = el.clientHeight - parseFloat(getComputedStyle(el).paddingTop) - parseFloat(getComputedStyle(el).paddingBottom);
+    if (inner > lh) el.classList.add('is-wrapped');
+  });
+  check();
+  if (document.fonts) document.fonts.ready.then(check);
+  let t; addEventListener('resize', () => { clearTimeout(t); t = setTimeout(check, 150); });
 })();
