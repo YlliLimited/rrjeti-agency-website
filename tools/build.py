@@ -3,7 +3,7 @@
 1. adds the SEO block to every page (canonical, hreflang, Open Graph,
    Twitter, robots, JSON-LD structured data),
 2. builds the English version of every page in new/en/ from tools/en.json,
-3. writes sitemap.xml, robots.txt and llms.txt,
+3. writes sitemap.xml, robots.txt, llms.txt and CNAME,
 4. minifies assets/css/main.css and assets/js/main.js into main.min.*
    (with esbuild through npx when available, else a plain copy) and stamps
    every page with a content-hash ?v= so browsers never keep stale files.
@@ -368,6 +368,7 @@ def main():
         '# AI assistants and answer engines are welcome to read and cite this site\n'
         + ''.join(f'User-agent: {b}\nAllow: /\n\n' for b in ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-User', 'Claude-SearchBot', 'PerplexityBot', 'Google-Extended', 'Applebot-Extended', 'Bingbot'])
         + f'Sitemap: {SITE}/sitemap.xml\n')
+    open(os.path.join(ROOT, 'CNAME'), 'w').write('rrjetiagency.com\n')
     open(os.path.join(ROOT, '.nojekyll'), 'w').write('')
     print(f'built {len(built)} pages x 2 languages, sitemap with {len(urls)} URLs')
     if missing:
