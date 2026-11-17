@@ -3,7 +3,7 @@
 1. adds the SEO block to every page (canonical, hreflang, Open Graph,
    Twitter, robots, JSON-LD structured data),
 2. builds the English version of every page in new/en/ from tools/en.json,
-3. writes sitemap.xml, robots.txt, llms.txt and CNAME,
+3. writes sitemap.xml, robots.txt and llms.txt,
 4. minifies assets/css/main.css and assets/js/main.js into main.min.*
    (with esbuild through npx when available, else a plain copy) and stamps
    every page with a content-hash ?v= so browsers never keep stale files.
@@ -196,6 +196,7 @@ def org_node(lang):
         'geo': {'@type': 'GeoCoordinates', 'latitude': 42.6481296, 'longitude': 21.1730162},
         'hasMap': MAP,
         'areaServed': {'@type': 'Country', 'name': 'Kosovo'},
+        'sameAs': ['https://www.instagram.com/rrjetiagency/', 'https://www.facebook.com/profile.php?id=61560256556534', 'https://www.linkedin.com/company/rrjeti-agency/'],
         'knowsLanguage': ['sq', 'en'],
         'contactPoint': {'@type': 'ContactPoint', 'telephone': '+38345775515', 'contactType': 'sales', 'availableLanguage': ['Albanian', 'English']},
         'makesOffer': [
@@ -367,7 +368,6 @@ def main():
         '# AI assistants and answer engines are welcome to read and cite this site\n'
         + ''.join(f'User-agent: {b}\nAllow: /\n\n' for b in ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-User', 'Claude-SearchBot', 'PerplexityBot', 'Google-Extended', 'Applebot-Extended', 'Bingbot'])
         + f'Sitemap: {SITE}/sitemap.xml\n')
-    open(os.path.join(ROOT, 'CNAME'), 'w').write('rrjetiagency.com\n')
     open(os.path.join(ROOT, '.nojekyll'), 'w').write('')
     print(f'built {len(built)} pages x 2 languages, sitemap with {len(urls)} URLs')
     if missing:
